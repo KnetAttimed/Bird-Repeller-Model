@@ -1,0 +1,205 @@
+//Program “Repeller model 1.1 x"
+
+//setting general
+int setd=20;//distance bird sensor
+float temperature = 28; //deg Celcius
+float soundSpeed = 331.5 + 0.6 * (temperature);
+
+//Ultrasonic setting
+int trig1=2;//1 front
+int echo1=3;
+int timemisec1;
+int distcm1;
+int trig2=4;//2 Back
+int echo2=5;
+int timemisec2;
+int distcm2;
+int trig3=6;//3 Left
+int echo3=7;
+int timemisec3;
+int distcm3;
+int trig4=8;//4 Right
+int echo4=9;
+int timemisec4;
+int distcm4;
+
+//set relay module
+const byte relayF = 10;//front control
+const byte relayB = 11;//Back control
+const byte relayS = 12;//side control & fan motor
+const byte relayP = 13;//Buzzer (sound) control
+
+//set oled ssd
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+#define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+void setup() {
+  //setup ultrasonic pin
+  pinMode(2,OUTPUT);//1
+  pinMode(3,INPUT);
+  pinMode(4,OUTPUT);//2
+  pinMode(5,INPUT);
+  pinMode(6,OUTPUT);//3
+  pinMode(7,INPUT);
+  pinMode(8,OUTPUT);//4
+  pinMode(9,INPUT);
+  //setup relay
+  pinMode(relayF, OUTPUT);
+  pinMode(relayB, OUTPUT);
+  pinMode(relayS, OUTPUT);
+  pinMode(relayP, OUTPUT);
+  Serial.begin(9600);
+  //oled ssd
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C); // Address 0x3C for 128x64
+  display.setTextColor(SSD1306_WHITE);  // Set text color to white
+}
+void loop() {
+  checkSensor1(); // Ultrasonic 1 read distance
+  checkSensor2(); // Ultrasonic 2 read distance
+  checkSensor3(); // Ultrasonic 3 read distance
+  checkSensor4(); // Ultrasonic 4 read distance
+  oled();//output data to oled
+  mainpumpF();
+  mainpumpB();
+  mainpumpS();
+
+}
+//check sensor fuction
+void checkSensor1() {
+  digitalWrite(trig1, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig1, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig1, LOW);
+  timemisec1 = pulseIn(echo1, HIGH);
+  distcm1 = timemisec1 * (soundSpeed / 2.) * pow(10, -4);
+  Serial.print(distcm1  );Serial.print(" ");
+ 
+}
+void checkSensor2() {
+  digitalWrite(trig2, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig2, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(trig2, LOW);
+  timemisec2 = pulseIn(echo2, HIGH);
+  distcm2 = timemisec2 * (soundSpeed / 2.) * pow(10, -4);
+  Serial.print(distcm2  );Serial.print(" ");
+  
+}
+void checkSensor3() {
+  digitalWrite(trig3, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig3, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(trig3, LOW);
+  timemisec3 = pulseIn(echo3, HIGH);
+  distcm3 = timemisec3 * (soundSpeed / 2.) * pow(10, -4);
+  Serial.print(distcm3  );Serial.print(" ");
+  
+}
+void checkSensor4() {
+  digitalWrite(trig4, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig4, HIGH);
+  delayMicroseconds(5);
+  digitalWrite(trig4, LOW);
+  timemisec4 = pulseIn(echo4, HIGH);
+  distcm4 = timemisec4 * (soundSpeed / 2.) * pow(10, -4);
+  Serial.print(distcm4  );Serial.println(" ");
+  
+}
+void mainpumpF(){//pump im front
+  if (distcm1 > 0) {
+    if (distcm1 < setd) {
+      digitalWrite(relayF, LOW);delay(50);
+      
+    }
+    else {
+      digitalWrite(relayF, HIGH);
+      
+    }
+}
+}
+void mainpumpB(){//pump in back
+  if (distcm2 > 0) {
+    if (distcm2 < setd) {
+      digitalWrite(relayB, LOW);delay(50);
+    }
+    else {
+      digitalWrite(relayB, HIGH);
+      
+    }
+}
+}
+void mainpumpS(){
+    if (distcm1 < setd||distcm2 < setd||distcm3 < setd||distcm4 < setd) {
+      digitalWrite(relayS, LOW);digitalWrite(relayP, LOW);
+    }
+
+    else {
+      digitalWrite(relayS, HIGH);digitalWrite(relayP, HIGH);
+    }
+}
+void oled(){
+  display.clearDisplay();
+  // Set text size and position
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+
+ display.print(" F : ");
+        if (distcm1 < setd) {
+         display.print("On  ");
+        }
+         else{
+        display.print("Off ");}
+      display.println(distcm1 );
+
+ display.print(" B : ");
+        if (distcm2 < setd) {
+         display.print("On  ");
+        }
+         else{
+        display.print("Off ");}
+      display.println(distcm2 );
+
+   display.print(" L : ");
+        if (distcm3 < setd) {
+         display.print("On  ");
+        }
+         else{
+        display.print("Off ");}
+      display.println(distcm3 );
+
+ display.print(" R : ");
+        if (distcm4 < setd) {
+         display.print("On  ");
+        }
+         else{
+        display.print("Off ");}
+      display.println(distcm4 );
+
+ 
+  //buzzer pump
+  if(distcm1 < setd||distcm2 < setd||distcm3 < setd||distcm4 < setd){
+    display.println("Buzzer: On  ");
+    display.println("Pump  : On  ");
+  }
+  else{
+  display.println("Buzzer: Off ");
+  display.println("Pump  : Off  "); }
+
+  display.display();// Update the display
+}
+
+
+
+// By Kiattisak Phothawimoncharat
+
+
