@@ -5,7 +5,6 @@
   used for learning only please reference me
   https://github.com/KnetAttimed
 */
-// Create a description by ChatGPT
 
 
 // Setting general
