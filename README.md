@@ -13,11 +13,6 @@ This model is equipped with ultrasonic sensors in all four directions, measuring
 |-------------------------|-------------------------|-------------------------|
 | ![Image 1](pic/4.jpg) | ![Image 2](pic/5.jpg) | ![Image 3](pic/6.jpg) |
 
-
-
-
-
-<br><br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> 
 ### Info:
 
 ```
