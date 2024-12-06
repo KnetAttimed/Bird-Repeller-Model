@@ -1,4 +1,12 @@
-// Program “Repeller model 1.1 x"
+/*  
+  The project : Bird Repeller Model
+  Program “Repeller model 1.1 x"
+  coding by Knet Attimed (Kiattisak Phothawimoncharat)
+  used for learning only please reference me
+  https://github.com/KnetAttimed
+*/
+
+
 
 // Setting general
 int setd = 20;  // distance bird sensor (Distance used to detect the bird)
@@ -80,6 +88,8 @@ void loop() {
   mainpumpS(); // Control side pump
 }
 
+// Coding by Knet Attimed (Kiattisak Phothawimoncharat)
+// Create new functions
 // Function to check the front sensor
 void checkSensor1() {
   digitalWrite(trig1, LOW); // Set trigger pin low
@@ -162,7 +172,7 @@ void mainpumpS() {
     digitalWrite(relayP, HIGH); // Turn on buzzer if no sensor detects an object
   }
 }
-
+// Coding by Knet Attimed (Kiattisak Phothawimoncharat)
 // Function to output data to OLED display
 void oled() {
   display.clearDisplay(); // Clear previous display data
@@ -216,6 +226,14 @@ void oled() {
 
 
 
-// By Kiattisak Phothawimoncharat
 
+
+
+/*  
+  The project : Bird Repeller Model
+  Program “Repeller model 1.1 x"
+  coding by Knet Attimed (Kiattisak Phothawimoncharat)
+  used for learning only please reference me
+  https://github.com/KnetAttimed
+*/
 
