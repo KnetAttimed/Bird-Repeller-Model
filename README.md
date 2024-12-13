@@ -19,6 +19,6 @@ This model is equipped with ultrasonic sensors in all four directions, measuring
   The project : Bird Repeller Model
   Program “Repeller model 1.1 x"
   coding by Knet Attimed (Kiattisak Phothawimoncharat)
-  used for learning only please reference me
+  used for learning only. please reference me if any.
   https://github.com/KnetAttimed
 ```
